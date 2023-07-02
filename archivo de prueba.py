@@ -16,16 +16,16 @@ datos_cliente = [
 ]
 
 datos_producto = [
-    {"codigo": "001", "nombre": "Sujetador de encaje", "precio": 25.99},
-    {"codigo": "002", "nombre": "Panties de algodón", "precio": 9.99},
-    {"codigo": "003", "nombre": "Camisón sedoso", "precio": 39.99},
-    {"codigo": "004", "nombre": "Tanga de encaje", "precio": 12.99},
-    {"codigo": "005", "nombre": "Braguitas de satén", "precio": 14.99},
-    {"codigo": "006", "nombre": "Babydoll transparente", "precio": 29.99},
-    {"codigo": "007", "nombre": "Bustier de encaje", "precio": 34.99},
-    {"codigo": "008", "nombre": "Pijama de seda", "precio": 49.99},
-    {"codigo": "009", "nombre": "Medias de malla", "precio": 8.99},
-    {"codigo": "010", "nombre": "Corsé de cuero", "precio": 59.99},
+    {"codigo": "001", "nombre": "Camisetas básicas", "precio": 19.99},
+    {"codigo": "002", "nombre": "Camisas de vestir", "precio": 39.90},
+    {"codigo": "003", "nombre": "Blusas casuales", "precio": 29.99},
+    {"codigo": "004", "nombre": "Pantalones vaqueros", "precio": 42.99},
+    {"codigo": "005", "nombre": "Pantalones chinos", "precio": 14.99},
+    {"codigo": "006", "nombre": "Pantalones jean", "precio": 26.99},
+    {"codigo": "007", "nombre": "Faldas", "precio": 34.99},
+    {"codigo": "008", "nombre": "Vestidos casuales", "precio": 19.99},
+    {"codigo": "009", "nombre": "Vestidos de fiesta", "precio": 108.99},
+    {"codigo": "010", "nombre": "Sudaderas con capucha", "precio": 59.99},
 ]
 
 clientes = []
@@ -112,34 +112,29 @@ def buscar_producto():
 
 
 def editar_datos_producto():
-    codigo:str = input("Ingrese el codigo del producto: ")
-    for producto in datos_producto:
-        if producto.codigo == codigo:
-            print(producto.convertir())
-            producto.nombre_producto = input("Ingrese nombre del producto: ")
-            producto.precio = input("Ingrese el precio del producto: ")
-    for producto in datos_producto:
-        if producto["codigo"] == codigo:
-            print("|{}|{}|{}|".format(producto["codigo"], producto["nombre"], producto["precio"]))
-            producto["nombre"] = input("Ingrese el nombre del producto: ")
-            producto["precio"] = float(input("Ingrese el precio del producto: "))
-
-def eliminar_producto():
     codigo = input("Ingrese el código del producto: ")
     encontrado = False
-    for indice, producto in enumerate(producto):
-        if producto.codigo == codigo:
-            print(producto.convertir())
-            producto.pop(indice)
-            encontrado = True
-            break
-    for indice, producto in enumerate(datos_producto):
-        if producto["codigo"] == codigo:
+    for producto in datos_producto:
+        if producto['codigo'] == codigo:
             print("|{}|{}|{}|".format(producto["codigo"], producto["nombre"], producto["precio"]))
-            datos_producto.pop(indice)
+            producto['nombre'] = input("Ingrese nombre del producto: ")
+            producto['precio'] = float(input("Ingrese el precio del producto: "))
             encontrado = True
             break
-    if not encontrado:
+
+def eliminar_producto():
+    codigo = input("Ingrese el código del producto a eliminar: ")
+    indice = -1
+    encontrado = False
+    for i, producto in enumerate(datos_producto):
+        if producto['codigo'] == codigo:
+            indice = i
+            encontrado = True
+            break
+    if encontrado:
+        datos_producto.pop(indice)
+        print("Producto eliminado correctamente.")
+    else:
         print("Producto no encontrado.")
 
 #============================================================
@@ -235,35 +230,35 @@ def lista_ventas():
             print("----------------------------------")
 
 def menu_text():
-    print("============================================")
-    print("====BIENVENIDO A NUESTRA TIENDA VIRTUAL=====")
-    print("============================================")
-    print("          FANTASIAS PROHIBIDAS.Sac\n            ")
-    print("== \fAqui cumpliras todas tus fantasias\f == ")
-    print("--------------------------------------------\n")
-    print(" Seleccione alguna opcion segun su preferencia\n ")
+    print('\033[95m',"\n▀▀▄▀▄▀▄▀▄▀▄▀▄•❅──────✧❅✦❅✧──────❅•▄▀▄▀▄▀▄▀▄▀▄▀▄")
+    print("    𝓑𝓘𝓔𝓝𝓥𝓔𝓝𝓘𝓓𝓞  𝓐  𝓝𝓤𝓔𝓢𝓣𝓡𝓐  𝓣𝓘𝓔𝓝𝓓𝓐  𝓥𝓘𝓡𝓣𝓤𝓐𝓛",'\033[95m')
+    print("    ========================================")
+    print("           TENDENCIAS FASHION.Sac \n")
+    print("   ░ ▒ Viste con elegancia y estilo  ░▒")
+    print("  ------------------------------------------\n")
+    print(" Seleccione alguna opcion segun su preferencia\n ",'\033[93m')
 
     print("****\2 Menu para cliente \2****\n")
     print("1) para insertar datos de cliente: ")
     print("2) para lista de clientes: ")
     print("3) para buscar cliente: ")
     print("4) para editar datos de cliente: ")
-    print("5) para eliminar datos de cliente:\n ")
+    print("5) para eliminar datos de cliente:\n ",'\033[94m')
     print("=======\3 Menu para producto \3======\n")
     print("6) para insertar producto: ")
-    print("7) para la lista de clientes: ")
+    print("7) para la lista de productos: ")
     print("8) para buscar producto: ")
     print("9) para editar los datos del producto: ")
-    print("10) para eliminar producto:\n ")
+    print("10) para eliminar producto:\n ",'\033[96m')
     print("\3\3\3 \4 Menu boletas \4 \3\3\3\n")
     print("11) para realizar una venta: ")
     print("12) lista de boletas: ")
-    
+
 def menu():
     continuar:bool=True
     while continuar:
-        opcion:str = input("seleccione la opcion: ")
         menu_text()
+        opcion:str = input("\nseleccione la opcion: ")
         match opcion:
             case "1":
                 insertar_cliente()
@@ -294,10 +289,10 @@ def menu():
                 print("el programa finalizo")
 
 def main():
-    print("Inicia el programa")
-    print(" ¡ANTES QUE NADA INTRODUCE TU NOMBRE!\n ")
+    print("Inicia el programa",'\033[96m')
+    print(" ¡ ♛ ANTES QUE NADA INTRODUCE TU NOMBRE! ♛ \n ")
     nombre= input(" Introduce tu nombre: ")
-    print("\n\v\v BIENVENIDO ", nombre, " Estamos muy felizes de su visita \v\v\n ")
+    print("\n\4\4 ꧁BIENVENIDO ", nombre, " Estamos muy felizes de su visita꧂ \4\4\n ")
     menu()
     return True
 
