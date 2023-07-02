@@ -118,16 +118,11 @@ def editar_datos_producto():
             print(producto.convertir())
             producto.nombre_producto = input("Ingrese nombre del producto: ")
             producto.precio = input("Ingrese el precio del producto: ")
-        break   
-
     for producto in datos_producto:
         if producto["codigo"] == codigo:
             print("|{}|{}|{}|".format(producto["codigo"], producto["nombre"], producto["precio"]))
             producto["nombre"] = input("Ingrese el nombre del producto: ")
             producto["precio"] = float(input("Ingrese el precio del producto: "))
-            break
-
-
 
 def eliminar_producto():
     codigo = input("Ingrese el código del producto: ")
