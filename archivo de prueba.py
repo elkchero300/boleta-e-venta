@@ -1,3 +1,5 @@
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 from Cliente import cliente
 from Producto import producto
 from venta_detalle import VentaDetalle
@@ -206,8 +208,8 @@ def lista_ventas():
         for venta in ventas:
             print("----------------------------------")
             print("Número de boleta:", venta.numero_boleta)  
-            print("Empresa: Fantasías Prohibidas")
-            print("Dirección: uliaca -Puno")
+            print("Empresa: Tendencias Fashion")
+            print("Dirección: Juliaca -Puno")
             print("Fecha:", venta.fecha)
             if isinstance(venta.cliente, dict):
                 print("Cliente:", venta.cliente["nombres"], venta.cliente["apellidos"])
@@ -228,7 +230,48 @@ def lista_ventas():
             print("IGV:", round(igv, 2))
             print("Total (con IGV):", round(total_con_igv, 2))
             print("----------------------------------")
+def lista_pdf():
+    if len(ventas) == 0:
+        print("No se han registrado ventas.")
+        return
 
+    pdf_filename = "lista_ventas.pdf"
+    c = canvas.Canvas(pdf_filename, pagesize=letter)
+    c.setFont("Helvetica", 12)
+
+    for venta in ventas:
+        c.drawString(100, 750, "Número de boleta: {}".format(venta.numero_boleta))
+        c.drawString(100, 735, "Empresa: Tendencias Fashion")
+        c.drawString(100, 720, "Dirección: Juliaca -Puno")
+        c.drawString(100, 700, "Fecha: {}".format(venta.fecha))
+
+        if isinstance(venta.cliente, dict):
+            c.drawString(100, 680, "Cliente: {} {}".format(venta.cliente["nombres"], venta.cliente["apellidos"]))
+            c.drawString(100, 665, "DNI: {}".format(venta.cliente["dni"]))
+        else:
+            c.drawString(100, 680, "Cliente: {} {}".format(venta.cliente.nombres, venta.cliente.apellidos))
+            c.drawString(100, 665, "DNI: {}".format(venta.cliente.dni))
+
+        c.drawString(100, 640, "Detalles:")
+        y = 620
+        for detalle in venta.detalles:
+            c.drawString(100, y, detalle.convertir())
+            c.drawString(300, y, "Cantidad: {}".format(detalle.cantidad))
+            c.drawString(300, y-15, "Precio unitario: {}".format(detalle.precio))
+            c.drawString(300, y-30, "Precio total: {}".format(detalle.precio * detalle.cantidad))
+            y -= 45
+
+        igv = venta.total * 0.18
+        total_con_igv = venta.total + igv
+        c.drawString(100, y, "Total: {}".format(venta.total))
+        c.drawString(100, y-15, "IGV: {}".format(round(igv, 2)))
+        c.drawString(100, y-30, "Total (con IGV): {}".format(round(total_con_igv, 2)))
+
+        c.showPage()
+
+    c.save()
+    print("PDF generado exitosamente. Nombre del archivo: lista_ventas.pdf")  
+    
 def menu_text():
     print('\033[95m',"\n▀▀▄▀▄▀▄▀▄▀▄▀▄•❅──────✧❅✦❅✧──────❅•▄▀▄▀▄▀▄▀▄▀▄▀▄")
     print("    𝓑𝓘𝓔𝓝𝓥𝓔𝓝𝓘𝓓𝓞  𝓐  𝓝𝓤𝓔𝓢𝓣𝓡𝓐  𝓣𝓘𝓔𝓝𝓓𝓐  𝓥𝓘𝓡𝓣𝓤𝓐𝓛",'\033[95m')
@@ -238,7 +281,7 @@ def menu_text():
     print("  ------------------------------------------\n")
     print(" Seleccione alguna opcion segun su preferencia\n ",'\033[93m')
 
-    print("****\2 Menu para cliente \2****\n")
+    print("*\2 Menu para cliente \2*\n")
     print("1) para insertar datos de cliente: ")
     print("2) para lista de clientes: ")
     print("3) para buscar cliente: ")
@@ -253,6 +296,7 @@ def menu_text():
     print("\3\3\3 \4 Menu boletas \4 \3\3\3\n")
     print("11) para realizar una venta: ")
     print("12) lista de boletas: ")
+    print("13 lista en pdf")
 
 def menu():
     continuar:bool=True
@@ -284,10 +328,11 @@ def menu():
                 registrar_venta()
             case "12":
                 lista_ventas()
-            case "13":
+            case "14":
                 continuar=False
                 print("el programa finalizo")
-
+            case "13":
+                lista_pdf()
 def main():
     print("Inicia el programa",'\033[96m')
     print(" ¡ ♛ ANTES QUE NADA INTRODUCE TU NOMBRE! ♛ \n ")
@@ -296,5 +341,6 @@ def main():
     menu()
     return True
 
-if __name__ == "__main__":
+
+if _name_ == "_main_":
     main()
